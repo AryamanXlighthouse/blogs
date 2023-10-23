@@ -120,7 +120,7 @@ Create a JSON file embedding the file link from the previous step, ensuring your
 }
 ```
 
-### Step 6: Deploy the Contract Using Ethers.js on the Sepolia Testnet
+### Step 7: Deploy the Contract Using Ethers.js on the Sepolia Testnet
 
 Here’s a detailed step using ethers.js to deploy your contract on the Sepolia testnet. Replace `'YOUR_PRIVATE_KEY'` and `'INFURA_API_KEY'` appropriately.
 
@@ -147,7 +147,7 @@ async function deployContract() {
 deployContract();
 ```
 
-### Step 7: Mint Your NFT Using Ethers.js
+### Step 8: Mint Your NFT Using Ethers.js
 
 This step provides an example code snippet to mint your NFT using ethers.js. Adapt the placeholders with actual values.
 
@@ -171,9 +171,9 @@ async function mintNFT() {
 mintNFT();
 ```
 
-### Step 8: Verify Your NFT
+### Step 9: Verify Your NFT
 
-To verify your NFT, use a blockchain explorer like Etherscan. Input your contract address, and explore the transactions and minted NFTs. Each NFT's distinct token ID and ownership records enhance transparency and authenticity.
+To verify your NFT, use a blockchain explorer like [Etherscan](https://sepolia.etherscan.io/). Input your contract address, and explore the transactions and minted NFTs. Each NFT's distinct token ID and ownership records enhance transparency and authenticity.
 
 ## Conclusion
 
