@@ -75,7 +75,7 @@ solcjs --bin --abi NFT.sol
 
 This will generate the binary and ABI needed to deploy the contract.
 
-#### Step 4: Generate Your Lighthouse API Key
+### Step 4: Generate Your Lighthouse API Key
 
 Before proceeding to upload your file to IPFS via Lighthouse, you need an API key. Follow these steps to generate one:
 
