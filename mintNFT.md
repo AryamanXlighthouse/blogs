@@ -26,7 +26,7 @@ To kickstart the process, ensure the installation and accessibility of these ess
     4. Enter a name for your project and click "Create".
     5. Upon creation, you'll be provided with the keys and endpoints. The keys include the `PROJECT ID`, `PROJECT SECRET`, and the endpoints for different Ethereum networks.
 
-Ensure to note down the `PROJECT ID` and `PROJECT SECRET`, and the endpoint URL you intend to use (for example, the Ropsten Testnet URL if you are deploying on the Ropsten network).
+    Ensure to note down the `PROJECT ID` and `PROJECT SECRET`, and the endpoint URL you intend to use (for example, the Ropsten Testnet URL if you are deploying on the Ropsten network).
 
 
 ### Step 2: Write Your Smart Contract
