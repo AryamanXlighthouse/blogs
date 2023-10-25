@@ -36,41 +36,44 @@ Craft a Solidity smart contract to define and manage your NFT. Here is a basic e
 ```solidity
 // NFT.sol
 
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract NFT is ERC721URIStorage, Ownable {
-uint256 private _tokenIdCounter;
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
 
-    constructor () ERC721("MyNFT", "NFT") {
-        _tokenIdCounter = 0;
+    constructor() ERC721("MyNFT", "NFT") Ownable() {
     }
 
-    function createNFT(string memory tokenURI) public onlyOwner returns (uint256) {
-        uint256 newTokenId = _tokenIdCounter;
+    function createNFT(
+        string memory tokenURI
+    ) public onlyOwner returns (uint256) {
+        uint256 newTokenId = _tokenIds.current();
         _mint(msg.sender, newTokenId);
         _setTokenURI(newTokenId, tokenURI);
-        _tokenIdCounter++;
+        _tokenIds.increment();
         return newTokenId;
     }
-
 }
 ```
 
 ### Step 3: Compile the Contract
 
-Use Solidity compiler (solc) to compile the contract. Install it via npm:
+Use Solidity compiler (solc) to compile the contract. Install Solc and other dependecies via npm:
 
 ```bash
-npm install -g solc
+npm install -g solc npm install @openzeppelin/contracts@4.9.0
 ```
 
 Compile the contract using the following command:
 
 ```bash
-solcjs --bin --abi NFT.sol
+solcjs --bin --abi --include-path node_modules --base-path . NFT.sol
 ```
 
 This will generate the binary and ABI needed to deploy the contract.
@@ -122,7 +125,7 @@ Create a JSON file embedding the file link from the previous step, ensuring your
 
 ### Step 7: Deploy the Contract Using Ethers.js on the Sepolia Testnet
 
-Here’s a detailed step using ethers.js to deploy your contract on the Sepolia testnet. Replace `'YOUR_PRIVATE_KEY'` and `'INFURA_API_KEY'` appropriately.
+Here’s a detailed step using ethers.js to deploy your contract on the Sepolia testnet. Replace `'YOUR_INFURA_PROJECT_ENDPOINT'` and `'YOUR_INFURA_PROJECT_ENDPOINT'` appropriately.
 
 ```javascript
 // deployContract.js
@@ -130,18 +133,28 @@ Here’s a detailed step using ethers.js to deploy your contract on the Sepolia 
 import { ethers } from 'ethers';
 import fs from 'fs';
 
-const contractABI = JSON.parse(fs.readFileSync('./path/to/ABI.json').toString());
-const bytecode = fs.readFileSync('./path/to/bytecode.bin').toString();
+const contractABI = JSON.parse(fs.readFileSync('.Path/to/the/NFT_sol_NFT.abi').toString());
+const bytecode = fs.readFileSync('.Path/to/the/NFT_sol_NFT.bin').toString();
+const infuraProjectEndpoint = "YOUR_INFURA_PROJECT_ENDPOINT"
 
 async function deployContract() {
-    const privateKey = 'YOUR_PRIVATE_KEY';
-    const provider = new ethers.InfuraProvider('sepolia', 'INFURA_API_KEY');
-    const wallet = new ethers.Wallet(privateKey, provider);
-    const ContractFactory = new ethers.ContractFactory(contractABI, bytecode, wallet);
-    const contract = await ContractFactory.deploy();
-    await contract.deployed();
+    try {
+        const privateKey = 'WALLET_PRIVATE_KEY';
+        const provider = new ethers.JsonRpcProvider(`https://polygon-mumbai.infura.io/v3/${infuraProjectEndpoint}`);
+        const wallet = new ethers.Wallet(privateKey, provider);
+        const ContractFactory = new ethers.ContractFactory(contractABI, bytecode, wallet);
+        
+        const deploymentTransaction = ContractFactory.getDeployTransaction();
+        const txResponse = await wallet.sendTransaction(deploymentTransaction);
 
-    console.log('Contract deployed at:', contract.address);
+        console.log('Transaction Hash:', txResponse.hash);
+
+        const receipt = await txResponse.wait();
+
+        console.log('Contract deployed at:', receipt.contractAddress);
+    } catch (error) {
+        console.error("Deployment failed:", error);
+    }
 }
 
 deployContract();
